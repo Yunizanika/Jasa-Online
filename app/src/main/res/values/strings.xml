@@ -25,4 +25,34 @@
     <string name="judul_daftar">Tidak Punya Akun, <b>Daftar Sekarang</b></string>
     <string name="lupa_password">Lupa <b>Passowrd?</b></string>
     <string name="atau_login">Atau Login Dengan</string>
+
+    <!--form register-->
+    <string name="nama">Nama</string>
+    <string name="tanggal_lahir">Tanggal Lahir</string>
+    <array name="jenis_kelamin">
+        <item>Jenis Kelamin</item>
+        <item>Laki-Laki</item>
+        <item>Perempuan</item>
+    </array>
+    <string name="no_hp">Nomor HP</string>
+    <string name="alamat">Alamat</string>
+    <string name="konfirmasi_password">Konfirmasi Password</string>
+    <string name="submit">Submit</string>
+
+    <!--fragment profile-->
+    <string name="jenis_kelamin">Jenis Kelamin</string>
+    <string name="waktu_sesi">Waktu Sesi</string>
+    <string name="myname">Yuni Zanika</string>
+    <string name="mybirth">11 Juni 2001</string>
+    <string name="mygender">Perempuan</string>
+    <string name="myphone">0822-1906-7268</string>
+    <string name="myaddres">Bengkalis</string>
+    <string name="myemail">yuyunisyerin@gmail.com</string>
+    <string name="mysession">09-10-2018 09:00:00</string>
+    <string name="edit_profil">Ubah Profil</string>
+    <string name="hapus_akun">Hapus Akun</string>
+
+    <!--form edit profile-->
+    <string name="judul_password">Silahkan kosongkan password, jika tidakmau mengubahnya!</string>
+
 </resources>

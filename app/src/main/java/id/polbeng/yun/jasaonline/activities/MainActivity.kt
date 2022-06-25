@@ -1,8 +1,11 @@
 package id.polbeng.yun.jasaonline.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
@@ -15,6 +18,9 @@ import id.polbeng.yun.jasaonline.fragments.BerandaFragment
 import id.polbeng.yun.jasaonline.fragments.JasaFragment
 import id.polbeng.yun.jasaonline.fragments.ProfileFragment
 import id.polbeng.yun.jasaonline.R
+import id.polbeng.yun.jasaonline.helpers.Config
+import id.polbeng.yun.jasaonline.helpers.SessionHandler
+import id.polbeng.yun.jasaonline.models.User
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(),
@@ -25,6 +31,7 @@ class MainActivity : AppCompatActivity(),
     lateinit var berandaFragment: BerandaFragment
     lateinit var jasaFragment: JasaFragment
     lateinit var profileFragment: ProfileFragment
+    lateinit var session : SessionHandler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,16 +39,36 @@ class MainActivity : AppCompatActivity(),
 
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+
         drawerLayout = findViewById(R.id.drawer_layout)
         navView = findViewById(R.id.nav_view)
+
         val toggle = ActionBarDrawerToggle(
             this, drawerLayout, toolbar, 0, 0
         )
+
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         navView.setNavigationItemSelectedListener(this)
-        openFragment(R.id.nav_beranda)
+        val fragmentId = intent.getIntExtra(
+            Config.EXTRA_FRAGMENT_ID,
+            R.id.nav_beranda)
+        openFragment(fragmentId)
+        session = SessionHandler(applicationContext)
+        val user: User? = session.getUser()
+        if(user != null) {
+            val headerView: View = navView.getHeaderView(0)
+            val tvNama: TextView =
+                headerView.findViewById(R.id.tvNamaHeader)
+            tvNama.text = user.nama
+            val tvEmail: TextView =
+                headerView.findViewById(R.id.tvEmailHeader)
+            tvEmail.text = user.email
+        }
+
+//      openFragment(R.id.nav_beranda)
     }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         openFragment(item.itemId)
         return true
@@ -82,16 +109,24 @@ class MainActivity : AppCompatActivity(),
 
                     dialog.dismiss()
 
-                    Snackbar.make(drawer_layout, "Anda klik ya!",
+                    session.removeUser()
+                    val intent = Intent(applicationContext,
+                        LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
 
-                        Snackbar.LENGTH_LONG).show()
+
+//                    Snackbar.make(drawer_layout, "Anda klik ya!",
+//
+//                        Snackbar.LENGTH_LONG).show()
                 }
                 builder.setNegativeButton("Tidak"){dialog, _ ->
                     dialog.dismiss()
 
-                    Snackbar.make(drawer_layout, "Anda klik tidak!",
-
-                        Snackbar.LENGTH_LONG).show()
+//                    Snackbar.make(drawer_layout, "Anda klik tidak!",
+//
+//                       Snackbar.LENGTH_LONG).show()
                 }
                 val alertDialog: AlertDialog = builder.create()
                 alertDialog.show()
